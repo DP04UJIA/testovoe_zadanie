@@ -1,0 +1,18 @@
+{
+	"server": {
+		"port": 3000
+	},
+	"jwt": {
+		"key": "qwerty"
+	},
+	"sequelize": {
+		"database": "test",
+		"username": "postgres",
+		"password": "root",
+		"dialect": "postgres",
+		"host": "localhost"
+	},
+	"pagination": {
+		"limit": 20
+	}
+}

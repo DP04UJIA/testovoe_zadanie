@@ -1,0 +1,367 @@
+{
+	"swagger": "2.0",
+	"info": {
+		"title": "API Doc",
+		"description": "API для тестового задания",
+		"version": "1.0.0"
+	},
+	"host": "localhost:3000",
+	"basePath": "/",
+	"schemes": ["http"],
+	"securityDefinitions": {
+		"apiKeyAuth": {
+			"type": "apiKey",
+			"in": "header",
+			"name": "Authorization",
+			"description": "Bearer token"
+		}
+	},
+	"paths": {
+		"/user/registration": {
+			"post": {
+				"tags": ["User"],
+				"description": "Регистрация нового пользователя",
+				"parameters": [
+					{
+						"name": "body",
+						"in": "body",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"login": {
+									"example": "any"
+								},
+								"password": {
+									"example": "any"
+								}
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Регистрация выполнена"
+					}
+				}
+			}
+		},
+		"/user/authorization": {
+			"post": {
+				"tags": ["User"],
+				"description": "Авторизация пользователя",
+				"parameters": [
+					{
+						"name": "body",
+						"in": "body",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"login": {
+									"example": "any"
+								},
+								"password": {
+									"example": "any"
+								}
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Авторизация выполнена"
+					}
+				}
+			}
+		},
+		"/post/addPost": {
+			"post": {
+				"tags": ["Post"],
+				"description": "Добавление нового поста",
+				"consumes": ["multipart/form-data"],
+				"parameters": [
+					{
+						"name": "authorization",
+						"in": "header",
+						"type": "string"
+					},
+					{
+						"name": "media",
+						"in": "files",
+						"description": "Медиа файлы для нового поста",
+						"schema": {
+							"$ref": "#/definitions/files"
+						}
+					},
+					{
+						"name": "body",
+						"in": "body",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"text": {
+									"example": "any"
+								}
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Пост опубликован",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"message": {
+									"type": "string",
+									"example": "Пост опубликован"
+								}
+							},
+							"xml": {
+								"name": "main"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/post/deletePost/{postId}": {
+			"delete": {
+				"tags": ["Post"],
+				"description": "Удаление поста",
+				"parameters": [
+					{
+						"name": "postId",
+						"in": "path",
+						"required": true,
+						"type": "string",
+						"description": "ID поста",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"postId": {
+									"type": "number",
+									"example": 1
+								}
+							}
+						}
+					},
+					{
+						"name": "authorization",
+						"in": "header",
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Пост удалён со всеми медиа файлами",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"message": {
+									"type": "string",
+									"example": "Пост удалён"
+								}
+							},
+							"xml": {
+								"name": "main"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/post/editPost/{postId}": {
+			"put": {
+				"tags": ["Post"],
+				"description": "Изменение поста",
+				"consumes": ["multipart/form-data"],
+				"parameters": [
+					{
+						"name": "postId",
+						"in": "path",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "authorization",
+						"in": "header",
+						"type": "string"
+					},
+					{
+						"name": "media",
+						"in": "files",
+						"description": "Медиа файлы для старого поста",
+						"schema": {
+							"$ref": "#/definitions/files"
+						}
+					},
+					{
+						"name": "body",
+						"in": "body",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"text": {
+									"example": "any"
+								}
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Пост изменён",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"message": {
+									"type": "string",
+									"example": "Пост изменён"
+								}
+							},
+							"xml": {
+								"name": "main"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/post/getPosts/{page}": {
+			"get": {
+				"tags": ["Post"],
+				"description": "Получение постов",
+				"consumes": ["multipart/form-data"],
+				"parameters": [
+					{
+						"name": "page",
+						"in": "path",
+						"required": true,
+						"type": "string",
+						"description": "Номер страницы",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"pageId": {
+									"type": "string",
+									"example": "1"
+								}
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Получение постов с лимитом",
+						"schema": {
+							"$ref": "#/definitions/posts"
+						}
+					}
+				}
+			}
+		}
+	},
+	"definitions": {
+		"user": {
+			"type": "object",
+			"properties": {
+				"login": {
+					"type": "string",
+					"example": "login"
+				},
+				"password": {
+					"type": "string",
+					"example": "qwerty"
+				}
+			}
+		},
+		"file": {
+			"type": "object",
+			"properties": {
+				"fieldname": {
+					"type": "string",
+					"example": "media"
+				},
+				"originalname": {
+					"type": "string",
+					"example": "Изображение.png"
+				},
+				"encoding": {
+					"type": "string",
+					"example": "7bit"
+				},
+				"mimetype": {
+					"type": "string",
+					"example": "image/png"
+				},
+				"size": {
+					"type": "string",
+					"example": "1000"
+				},
+				"destination": {
+					"type": "string",
+					"example": "static\\image"
+				},
+				"filename": {
+					"type": "string",
+					"example": "dcb54c83-7640-4ad4-aaa3-35045c240e51"
+				},
+				"path": {
+					"type": "string",
+					"example": "static\\image\\dcb54c83-7640-4ad4-aaa3-35045c240e51"
+				}
+			}
+		},
+		"files": {
+			"type": "array",
+			"items": {
+				"$ref": "#/definitions/file"
+			}
+		},
+		"media": {
+			"type": "object",
+			"properties": {
+				"fieldname": {
+					"type": "string",
+					"example": "dcb54c83-7640-4ad4-aaa3-35045c240e51"
+				},
+				"destination": {
+					"type": "string",
+					"example": "static\\image"
+				},
+				"type": {
+					"type": "string",
+					"example": "png"
+				}
+			}
+		},
+		"medias": {
+			"type": "array",
+			"items": {
+				"$ref": "#/definitions/media"
+			}
+		},
+		"post": {
+			"type": "object",
+			"properties": {
+				"date": {
+					"type": "string",
+					"example": "2023-01-01T00:00:01.001Z"
+				},
+				"text": {
+					"type": "string",
+					"example": "text"
+				},
+				"medias": {
+					"$ref": "#/definitions/medias"
+				}
+			}
+		},
+		"posts": {
+			"type": "array",
+			"items": {
+				"$ref": "#/definitions/post"
+			}
+		}
+	}
+}
